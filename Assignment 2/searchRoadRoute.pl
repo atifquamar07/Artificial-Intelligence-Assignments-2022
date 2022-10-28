@@ -54,9 +54,9 @@ check_option(Choice):-
     % calling depth-first function
     depthFirstSearch([], Source, Final_Ans, 0, FinalCost),
     reverse(Final_Ans, Reversed_Ans),
-    nl, writeln("Path is:-"),
+    nl, writeln("The path according to DFS is:-"),
     print_sol(Reversed_Ans), nl,
-    nl, writeln("Cost is:-"),
+    nl, writeln("Distance travelled following the mentioned path is:-"),
     writeln(FinalCost).
 
 %------------------------------------------------------------------------------------------------------
@@ -87,7 +87,7 @@ check_option(Choice):-
     print_sol_bfs(Reversed_Ans), nl,
 
     % printing the distance travelled using that path.
-    writeln("Cost is:-"),
+    nl, writeln("Distance travelled following the mentioned path is:-"),
     writeln(TotalDistanceTravelled).
 
 %------------------------------------------------------------------------------------------------------
