@@ -1,9 +1,12 @@
 from durable.lang import *
 
+
+# used to store the answers to be printed(facts)
 answer_list = []
 
 des = "**********************************************************************************************\n"
 
+# function asking whether to go to job sector or research rector
 def job_questions():
     print("**********************************************************************************************")
     print("Where does your interest lie?\n")
@@ -12,6 +15,7 @@ def job_questions():
     opt = int(input("Choose from the options above: "))
     return opt
 
+# function asking the preference of clubs
 def club_questions():
     print("\n**********************************************************************************************")
     print("It is good to take care of your career, but one should take out some time for themselves.")
@@ -39,11 +43,14 @@ def club_questions():
 
     return club
 
+# RuleSet segregating branches and CGPA, and asserting facts based on them, and branching out to clubs ruleset
 with ruleset("Study_Field"):
 
     # **********************************************************************************************
     #                               Computer Science Study Field
     # **********************************************************************************************
+
+    # CSE best gpa (8 <= CGPA <= 10)
     @when_all((m.branch == 'CSE') & (m.grade >= 8.0) & (m.grade <= 10.0))
     def cse_good_gpa(obj):
 
@@ -64,6 +71,7 @@ with ruleset("Study_Field"):
         obj.assert_fact({"subject_suggestion": advice})
 
 
+    # CSE average gpa (7 <= CGPA < 8)
     @when_all((m.branch == 'CSE') & (m.grade >= 7.0) & (m.grade < 8.0))
     def cse_fair_gpa(obj):
 
@@ -85,7 +93,7 @@ with ruleset("Study_Field"):
         obj.assert_fact({"subject_suggestion": advice })
         
 
-
+    # CSE gpa not good (7 < CGPA)
     @when_all((m.branch == 'CSE') & (m.grade <= 7.0))
     def cse_poor_gpa(obj):
 
@@ -111,6 +119,7 @@ with ruleset("Study_Field"):
     #                            Electronics and Communication Study Field
     # **********************************************************************************************
 
+    # ECE best gpa (8 <= CGPA <= 10)
     @when_all((m.branch == 'ECE') & (m.grade >= 8.0) & (m.grade <= 10.0))
     def ece_good_gpa(obj):
 
@@ -132,6 +141,7 @@ with ruleset("Study_Field"):
         obj.assert_fact({"subject_suggestion": advice})
 
 
+    # ECE average gpa (7 <= CGPA < 8)
     @when_all((m.branch == 'ECE') & (m.grade >= 7.0) & (m.grade < 8.0))
     def ece_fair_gpa(obj):
 
@@ -153,7 +163,7 @@ with ruleset("Study_Field"):
         obj.assert_fact({"subject_suggestion": advice })
         
 
-
+    # ECE gpa not good (7 < CGPA)
     @when_all((m.branch == 'ECE') & (m.grade <= 7.0))
     def ece_poor_gpa(obj):
 
@@ -180,6 +190,7 @@ with ruleset("Study_Field"):
     #                            Computational Biology Study Field
     # **********************************************************************************************
 
+    # CB best gpa (8 <= CGPA <= 10)
     @when_all((m.branch == 'CB') & (m.grade >= 8.0) & (m.grade <= 10.0))
     def cb_good_gpa(obj):
 
@@ -200,7 +211,7 @@ with ruleset("Study_Field"):
         obj.assert_fact("Clubs", {"club_type" : club})
         obj.assert_fact({"subject_suggestion": advice})
 
-
+    # CB average gpa (7 <= CGPA < 8)
     @when_all((m.branch == 'CB') & (m.grade >= 7.0) & (m.grade < 8.0))
     def cb_fair_gpa(obj):
 
@@ -222,7 +233,7 @@ with ruleset("Study_Field"):
         obj.assert_fact({"subject_suggestion": advice })
         
 
-
+    # CB gpa not good (7 < CGPA)
     @when_all((m.branch == 'CB') & (m.grade <= 7.0))
     def cb_poor_gpa(obj):
         
@@ -247,13 +258,15 @@ with ruleset("Study_Field"):
     #                            Generate List of Facts of Courses
     # **********************************************************************************************
 
+    # appending all the facts in the answer_list list.
     @when_all(+m.subject_suggestion)
     def output(obj):
         sp = "                                     "
         answer_list.append('\n{0}{1}COURSE CHOICES\n{2}\n{3}\n'.format(des, sp, des, obj.m.subject_suggestion))
-        # answer_list.append('{0}'.format(obj.m.subject_suggestion))
 
 
+
+# RuleSet judging the career of the student based on CGPA and choice of job field.
 with ruleset("Career"):
 
     # **********************************************************************************************
@@ -324,12 +337,13 @@ with ruleset("Career"):
     #                            Generate List of Facts of Careers
     # **********************************************************************************************
 
+    # appending all the facts in the answer_list list.
     @when_all(+m.future_plan)
     def output(obj):
         answer_list.append('Future Plan: {0}'.format(obj.m.future_plan))
 
 
-
+# RuleSet suggesting the clubs to the user based in his/her interest.
 with ruleset("Clubs"):
 
     @when_all(m.club_type == "Coding")
@@ -394,6 +408,7 @@ elif(branch == 3):
     name_branch = "CB"
 
 
+# asserting the initial fact.
 assert_fact("Study_Field", {"branch": name_branch, "grade": cgpa})
 
 print()
