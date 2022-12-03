@@ -1,0 +1,7 @@
+Sample Input 1
+
+I am from the Computer Science and Artificial Intelligence branch at IIITD. I want to pursue courses on the currently emerging topics in the Machine Learning field. I want to study specifically in the area of Image Processing, ML, and Natural Language Proc.
+
+Sample Input 2
+
+I am from the Computer Science and Biosciences branch at IIITD. I want to pursue courses on the currently emerging topics in the Biology field. I want to study specifically in the area of Neurosciences and Image Processing.
